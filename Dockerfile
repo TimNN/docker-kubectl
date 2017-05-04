@@ -1,12 +1,16 @@
-FROM alpine:3.4
+FROM ubuntu:latest
 
-RUN apk add --no-cache \
-    bash \
-    curl \
-    openssl \
- && wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(wget -O - https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
- && chmod +x /usr/local/bin/kubectl \
- && wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 \
+RUN apt-get update \
+ && apt-get -y upgrade \
+ && apt-get -y install apt-utils \
+ && apt-get -y install wget \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(wget -O - https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+ && chmod +x /usr/local/bin/kubectl
+
+RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 \
  && chmod +x /usr/local/bin/dumb-init
 
 ENTRYPOINT [ "/usr/local/bin/dumb-init", "--" ]
