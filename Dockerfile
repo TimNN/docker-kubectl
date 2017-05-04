@@ -2,6 +2,7 @@ FROM alpine:3.4
 
 RUN apk add --no-cache \
     bash \
+    curl \
     openssl \
  && wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(wget -O - https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
  && chmod +x /usr/local/bin/kubectl \
